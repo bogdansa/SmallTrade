@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<trades>
+  <trade>
+    <name>trade_name1</name>
+    <type>General</type>
+    <value>20,647</value>
+    <description>description1</description>
+  </trade>
+  <trade>
+    <name>trade_name2</name>
+    <type>Long</type>
+    <value>30,622</value>
+    <description>description2</description>
+  </trade>
+</trades>

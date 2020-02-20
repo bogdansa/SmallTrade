@@ -1,15 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmallTrade
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private const string XmlSourceData = "SmallTrades.xml";
+
+        private static void Main()
         {
+            var smallTrades = new List<SmallTrade>();
+
+            var xmlSmallTradeLoader = new XmlSmallTradeLoader();
+
+            smallTrades = xmlSmallTradeLoader.LoadTrades(XmlSourceData).ToList();
         }
     }
 }
