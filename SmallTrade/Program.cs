@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SmallTrade
 {
@@ -9,11 +11,17 @@ namespace SmallTrade
 
         private static void Main()
         {
-            var smallTrades = new List<SmallTrade>();
-
             var xmlSmallTradeLoader = new XmlSmallTradeLoader();
 
-            smallTrades = xmlSmallTradeLoader.LoadTrades(XmlSourceData).ToList();
+            List<SmallTrade> smallTrades = xmlSmallTradeLoader.LoadTrades(XmlSourceData).ToList();
+
+
+            var xmlSmallTradeLoaderAsync = new XmlSmallTradeLoaderAsync();
+
+            List<Task<SmallTrade>> smallTradesAsync = xmlSmallTradeLoaderAsync.LoadTradesAsync(XmlSourceData).ToList();
+
+            Console.WriteLine("Press 'Enter' key to close the program");
+            Console.Read();
         }
     }
 }

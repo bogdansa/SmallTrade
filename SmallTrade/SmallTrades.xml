@@ -3,13 +3,19 @@
   <trade>
     <name>trade_name1</name>
     <type>General</type>
-    <value>20,647</value>
+    <value>10,647</value>
     <description>description1</description>
   </trade>
   <trade>
     <name>trade_name2</name>
     <type>Long</type>
-    <value>30,622</value>
+    <value>20,622</value>
     <description>description2</description>
+  </trade>
+  <trade>
+    <name>trade_name3</name>
+    <type>Long</type>
+    <value>30,622</value>
+    <description>description3</description>
   </trade>
 </trades>
