@@ -9,7 +9,7 @@ namespace SmallTrade
     {
         private const string XmlSourceData = "SmallTrades.xml";
 
-        private static void Main()
+        private static async Task Main()
         {
             var xmlSmallTradeLoader = new XmlSmallTradeLoader();
 
@@ -18,7 +18,9 @@ namespace SmallTrade
 
             var xmlSmallTradeLoaderAsync = new XmlSmallTradeLoaderAsync();
 
-            List<Task<SmallTrade>> smallTradesAsync = xmlSmallTradeLoaderAsync.LoadTradesAsync(XmlSourceData).ToList();
+            Task<IEnumerable<Task<SmallTrade>>> smallTradesAsyncTask = xmlSmallTradeLoaderAsync.LoadTradesAsync(XmlSourceData);
+            await smallTradesAsyncTask;
+            IEnumerable<Task<SmallTrade>> smallTradesAsync = smallTradesAsyncTask.Result;
 
             Console.WriteLine("Press 'Enter' key to close the program");
             Console.Read();
