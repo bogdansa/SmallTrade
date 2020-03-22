@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +19,7 @@ namespace SmallTrade
 
             Task<IEnumerable<SmallTrade>> smallTradesAsyncTask = xmlSmallTradeLoaderAsync.LoadTradesAsync(XmlSourceData);
 
-            Console.WriteLine("Faking doing extra work in the main thread.");
+            Console.WriteLine("\nFaking doing extra work in the main thread.");
             Console.WriteLine("Faking doing extra work in the main thread.");
             Console.WriteLine("Faking doing extra work in the main thread.");
             await smallTradesAsyncTask;
@@ -31,4 +30,4 @@ namespace SmallTrade
             Console.Read();
         }
     }
-}.
+}
