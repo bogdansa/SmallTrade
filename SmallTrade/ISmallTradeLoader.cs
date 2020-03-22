@@ -10,6 +10,6 @@ namespace SmallTrade
 
     public interface ISmallTradeLoaderAsync
     {
-        Task<IEnumerable<Task<SmallTrade>>> LoadTradesAsync(string uri);
+        Task<IEnumerable<SmallTrade>> LoadTradesAsync(string uri);
     }
 }

@@ -16,7 +16,7 @@ namespace SmallTrade
     {
         private int _threadNo;
 
-        public /*async*/ Task<IEnumerable<Task<SmallTrade>>> LoadTradesAsync(string uri)
+        public Task<IEnumerable<SmallTrade>> LoadTradesAsync(string uri)
         {
             XDocument xmlDocument = XDocument.Load(uri);
 
@@ -24,57 +24,39 @@ namespace SmallTrade
 
             IEnumerable<XElement> tradeList = tradesList.Elements("trade");
 
-            Task<IEnumerable<Task<SmallTrade>>> smallTrades = /*await*/ GetSmallTradesAsync(tradeList);
-
-            return smallTrades;
+            return GetSmallTradesAsync(tradeList);
         }
 
-        private async Task<IEnumerable<Task<SmallTrade>>> GetSmallTradesAsync(IEnumerable<XElement> tradeList)
+        private async Task<IEnumerable<SmallTrade>> GetSmallTradesAsync(IEnumerable<XElement> tradeList)
         {
             Console.WriteLine("Starting all the tasks");
 
             IEnumerable<Task<SmallTrade>> smallTrades = tradeList.Select(x => DoNextThread(x, ++_threadNo));
 
-            List<Task<SmallTrade>> smallTradesAsync = smallTrades.ToList();
-
             Console.WriteLine("Waiting for all the tasks to finish\n");
 
-            foreach (Task<SmallTrade> task in smallTradesAsync)
-            {
-                //Console.WriteLine($"Waiting for {task.Result.Name} thread");
-                await task;
-                Console.WriteLine($"After waiting for {task.Result.Name} thread\n");
-            }
-
-            return smallTradesAsync;
+            return await Task.WhenAll(smallTrades.ToList());
         }
 
         private static Task<SmallTrade> DoNextThread(XElement trade, int threadNo)
         {
-            //Count("Second thread A to 500", 500); //when it works it needs to finish first
-
-            Console.WriteLine($"Before starting next threadNo={threadNo}");
+            Console.WriteLine($"Before starting the next threadNo={threadNo}");
             Task<SmallTrade> task =  Task.Factory.StartNew(() => CreateOneSmallTrade(trade, threadNo));
-            Console.WriteLine($"After  starting next threadNo={threadNo}\n");
+            Console.WriteLine($"After  starting the next threadNo={threadNo}\n");
 
             return task;
         }
 
         private static SmallTrade CreateOneSmallTrade(XElement trade, int threadNo)
         {
-
-            string tradeName = trade.Element("name")?.Value ?? "";
-
-            //Console.WriteLine($"Starting treadNo {threadNo} - {tradeName}");
-
             if (threadNo == 2)
             {
-                //Thread.Sleep(20 * 1000);
+                //Thread.Sleep(2 * 1000);
             }
 
             var smallTrade = new SmallTrade
             {
-                Name = tradeName /* ?? throw new InvalidOperationException()*/,
+                Name = trade.Element("name")?.Value ?? throw new InvalidOperationException(),
 
                 TradeType = (TradeType)Enum.Parse(typeof(TradeType),
                     trade.Element("type")?.Value ?? throw new InvalidOperationException()),
@@ -84,7 +66,7 @@ namespace SmallTrade
                 Description = trade.Element("description")?.Value ?? throw new InvalidOperationException()
             };
 
-            Console.WriteLine($"Finishing treadNo {threadNo} - {tradeName}");
+            Console.WriteLine($"Finishing treadNo {threadNo} - {smallTrade.Name}");
 
             return smallTrade;
         }
